@@ -77,7 +77,7 @@
 		function getUserList() {
 		    $.ajax({
 		        type: "GET",
-		         url: "/admin/users",
+		         url: "/api/admin/users",
 		         success: function(data, textStatus, xhr) {
 					 if (xhr.status == 200) {
 						 console.log(data);
@@ -98,7 +98,7 @@
 		function deleteUser(uid) {
 		    $.ajax({
 		        type: "POST",
-		         url: '/admin/user',
+		         url: '/api/admin/user',
 				data: {uid : uid},
 		         success: function(data, textStatus, xhr) {
 					 location.reload();
@@ -121,7 +121,7 @@
 			$("#user-score-form").submit(function(event) {
 			    $.ajax({
 			        type: "GET",
-			         url: "/admin/scores",
+			         url: "/api/admin/scores",
 			         data: $(this).serialize(),
 			         success: function(data, textStatus, xhr) {
 						 if (xhr.status == 200) {

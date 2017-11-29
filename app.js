@@ -39,8 +39,8 @@ const userRoute = require('./routes/user');
 
 app.use(webRoute);
 app.use('/dev', devRoute);
-app.use('/admin', adminRoute);
-app.use('/user', userRoute);
+app.use('/api/admin', adminRoute);
+app.use('/api/user', userRoute);
 
 // Passport Strategy
 const User = require('./models/user');

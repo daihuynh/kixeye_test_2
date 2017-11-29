@@ -37,7 +37,7 @@
 		</div>
 		<div class="submit_score">
 			<label>Submit Score</label>
-	        <form action="/user/score" id="score-form" method="post">
+	        <form action="/api/user/score" id="score-form" method="post">
 	            <input id="score" name="score" type="text" placeholder="New score" required></br>
 	            <button>Submit</button>
 	        </form>
@@ -63,7 +63,7 @@
 				$("#score-form").submit(function(event) {
 				    $.ajax({
 				        type: "POST",
-				         url: "/user/score",
+				         url: "/api/user/score",
 				         data: $(this).serialize(),
 				         success: function(data, textStatus, xhr) {
 							 location.reload();

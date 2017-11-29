@@ -6,7 +6,7 @@
 	    <meta name="viewport" content="width=device-width">
 	</head>
 	<body>
-        <form action="/user/login" id="login-form" method="post">
+        <form action="/api/user/login" id="login-form" method="post">
             <input id="username" name="userName" type="text" placeholder="user name" required>
             <div class="bar">
                 <i></i>
@@ -22,7 +22,7 @@
 			$("#login-form").submit(function(event) {
 			    $.ajax({
 			        type: "POST",
-			         url: "/user/login",
+			         url: "/api/user/login",
 			         data: $(this).serialize(),
 			         success: function(data, textStatus, xhr) {
 						 if (xhr.status == 200) {
