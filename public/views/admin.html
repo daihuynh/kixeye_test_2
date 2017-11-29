@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <title>Admin - Kix Eye Test 2</title>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width">
+		<style>
+			html, body {
+				height : 100%;
+				margin : 0;
+			}
+			
+			.console {
+				position : relative;
+				height : 100%;
+				width : 100%;
+				background: rgba(0, 0, 0, 0.5);
+			}
+			
+			.console div {
+				display: flex;
+				flex-direction: row;
+				padding: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<h1>Hi Admin: <%= user.userName %> !</h1>
+			<p>Your score current is <%= user.score%></p>
+		</div>
+		<div>
+			<a href="/">Back to user page</a>
+		</div>
+		<div class="score_report">
+			<form id="user-score-form" method="get">
+				From: <input type="date" name="from"/></br>
+				To: <input type="date" name="to"/></br>
+				<button>Get user list update in this time</button>
+			<form>
+			<div id="user-score-count"></div>
+			<div id="user-score-records">
+			</div>
+		</div>
+		<div>SERVER MESSAGES</div>
+		<div class="console">
+		</div>
+	</body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script>
+		Date.prototype.toDateInputValue = (function() {
+		    var local = new Date(this);
+		    local.setMinutes(this.getMinutes() - this.getTimezoneOffset());
+		    return local.toJSON().slice(0,10);
+		});
+		
+		$(document).ready(function() {
+			$('input[type="date"]').each((idx, ip) => {
+				ip.value = new Date().toDateInputValue();
+			});
+			
+			$("#user-score-form").submit(function(event) {
+			    $.ajax({
+			        type: "GET",
+			         url: "/admin/scores",
+			         data: $(this).serialize(),
+			         success: function(data, textStatus, xhr) {
+						 if (xhr.status == 200) {
+							 console.log(data);
+							 $("#user-score-count").html(`Has ${data.count} users update score at this time`);
+							 $("#user-score-records").empty();
+						 	const recordEls = data.records.map((it) => {
+						 		return `<div>${it.userName} : ${it.score}</div>`;
+						 	});
+								
+							 $("#user-score-records").append(recordEls);
+						 }
+			          },
+					 complete: function(xhr, textStatus) {
+					     if (xhr.status != 200) {
+							 alert(textStatus);
+					     }
+					  } 
+			       });
+				   
+				event.preventDefault();
+			});
+		});
+	</script>
+</html>

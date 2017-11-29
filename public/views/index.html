@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <title>Kix Eye Test 2</title>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width">
+		<style>
+			html, body {
+				height : 100%;
+				margin : 0;
+			}
+			
+			.console {
+				position : relative;
+				height : 100%;
+				width : 100%;
+				background: rgba(0, 0, 0, 0.5);
+			}
+			
+			.console div {
+				display: flex;
+				flex-direction: row;
+				padding: 10px;
+			}
+		</style>
+	</head>
+	<body>
+		<div class="header">
+			<h1>Hi <%= user.userName %> !</h1>
+			<p>Your score current is <%= user.score%></p>
+		</div>
+		<div>
+			<a href="/changename">Change nick name</a>
+			<%if (user.isAdmin) { %>
+				<a href="/dashboard">Admin page</a>
+			<% } %>
+		</div>
+		<div class="submit_score">
+		</div>
+		<div>SERVER MESSAGES</div>
+		<div class="console">
+		</div>
+	</body>
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script src="/socket.io/socket.io.js"></script>
+	<script>
+			const socket = io();
+			socket.on('connection', function(socket) {
+				$('.console').append("<div>Connected to server</div>");
+			});
+		
+			socket.on('updatescore', function(data) {
+				const { userName, score } = data; 
+				$('.console').append(`<div>${userName} has new score: ${score}</div>`);
+			});
+	</script>
+</html>

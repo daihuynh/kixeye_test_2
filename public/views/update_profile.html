@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html>
+	<head>
+	    <title><%= title %> - Kix Eye Test 2</title>
+	    <meta charset="UTF-8">
+	    <meta name="viewport" content="width=device-width">
+	</head>
+	<body>
+        <form action="/user" id="login-form" method="PUT">
+            <input id="username" name="userName" type="text" placeholder="user name" required>
+            <div class="bar">
+                <i></i>
+            </div>
+            <button id="update">Update</button>
+        </form>
+	</body>
+	
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+	<script>
+		$(document).ready(function() {
+			$("#login-form").submit(function(event) {
+			    $.ajax({
+			        type: "PUT",
+			         url: "/user",
+			         data: $(this).serialize(),
+			         success: function(data, textStatus, xhr) {
+						 if (xhr.status == 200) {
+							 window.location = '/';
+						 } else {
+							 alert(data);
+						 }
+			          },
+					 complete: function(xhr, textStatus) {
+					     if (xhr.status != 200) {
+							 alert(textStatus);
+					     }
+					  } 
+			       });
+				   
+				event.preventDefault();
+			});
+		});
+	</script>
+</html>
