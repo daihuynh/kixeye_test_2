@@ -102,5 +102,9 @@ UserSchema.statics.cache = (user) => {
 	redis.set(`${config.RedisUserCacheStoreKey}::${user.id}`, JSON.stringify(user));
 }
 
+UserSchema.statics.removeCache = (uid) => {
+	redis.delete(`${config.RedisUserCacheStoreKey}::${uid}`);
+};
+
 
 module.exports = mongoose.model('User', UserSchema, 'Users');

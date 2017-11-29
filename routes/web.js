@@ -22,6 +22,15 @@ router.get('/login', function (req, res) {
     });
 });
 
+
+router.get('/changename', isLoggedIn, function (req, res) {
+	console.log('WEB === Login page');
+	
+	res.render('update_profile.html', {
+        title: 'Change name'
+    });
+});
+
 router.get('/dashboard', isAdmin, function (req, res) { 
 	res.render('admin.html', {
         user: req.user

@@ -35,6 +35,18 @@ router.get('/:uid/score', (req, res) => {
 	});
 });
 
+router.get('/users', (req, res) => {
+	User.find({ isAdmin : {$ne: true}}).then((users) => {
+		res.status(200).json({
+			users : users
+		})
+	}).catch((err) => {
+		res.status(500).json({
+			error : err.message
+		});
+	});
+});
+
 router.get('/scores', (req, res) => {
 	let { from, to } = req.query;
 	
@@ -70,7 +82,7 @@ router.get('/scores', (req, res) => {
 });
 
 // DELETE: /admin/user/:uid - delete user by id
-router.delete('/user', (req, res) => {
+router.post('/user', (req, res) => {
 	const admin = req.user;
 	
 	const { uid } = req.body;

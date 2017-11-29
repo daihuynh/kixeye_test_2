@@ -36,6 +36,11 @@
 			<% } %>
 		</div>
 		<div class="submit_score">
+			<label>Submit Score</label>
+	        <form action="/user/score" id="score-form" method="post">
+	            <input id="score" name="score" type="text" placeholder="New score" required></br>
+	            <button>Submit</button>
+	        </form>
 		</div>
 		<div>SERVER MESSAGES</div>
 		<div class="console">
@@ -52,6 +57,26 @@
 			socket.on('updatescore', function(data) {
 				const { userName, score } = data; 
 				$('.console').append(`<div>${userName} has new score: ${score}</div>`);
+			});
+			
+			$(document).ready(function() {
+				$("#score-form").submit(function(event) {
+				    $.ajax({
+				        type: "POST",
+				         url: "/user/score",
+				         data: $(this).serialize(),
+				         success: function(data, textStatus, xhr) {
+							 location.reload();
+				          },
+						 complete: function(xhr, textStatus) {
+						     if (xhr.status != 200) {
+								 alert(textStatus);
+						     }
+						  } 
+				       });
+				   
+					event.preventDefault();
+				});
 			});
 	</script>
 </html>

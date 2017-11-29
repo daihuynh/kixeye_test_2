@@ -104,7 +104,7 @@ router.post('/score', isLoggedIn, (req, res) => {
 		const timelineData = [config.RedisScoreTimelineStoreKey, new Date().getTime(), JSON.stringify({ 
 			id : user.id, 
 			userName: user.userName, 
-			score : user.score})];
+			score : score})];
 		redis.zadd(timelineData, (err, response) => {
 			if (err) {
 				console.log(`Update timeline error ${err}`);
@@ -113,7 +113,7 @@ router.post('/score', isLoggedIn, (req, res) => {
 		
 		// Ranking
 		console.log(`Storing score to ${config.RedisScoreStoreKey}`);
-		const scoreData = [config.RedisScoreStoreKey, user.score, user.id];
+		const scoreData = [config.RedisScoreStoreKey, score, user.id];
 		redis.zadd(scoreData, (err, response) => {
 			if (err) res.status(500).json({ error : err.message});
 			
@@ -121,7 +121,7 @@ router.post('/score', isLoggedIn, (req, res) => {
 			
 			redis.publish("score", JSON.stringify({
 				userName : user.userName,
-				score : user.score
+				score : score
 			}));
 			
 			res.status(200).send();

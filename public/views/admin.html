@@ -22,6 +22,15 @@
 				flex-direction: row;
 				padding: 10px;
 			}
+			
+			.user_list {
+				width: 100%;
+				border : solid black 1px;
+			}
+			
+			.user_list td {
+				text-align : center;
+			}
 		</style>
 	</head>
 	<body>
@@ -42,8 +51,19 @@
 			<div id="user-score-records">
 			</div>
 		</div>
-		<div>SERVER MESSAGES</div>
-		<div class="console">
+		<div class="users">
+			<table class="user_list">
+				<thead>
+					<tr>
+						<th>User Name</th>=
+						<th>Score</th>=
+						<th>Update Score Count</th>
+						<th>Control</th>
+					</tr>
+				</thead>
+				<tbody id="user_list_body">
+				</tbody>
+			</table>
 		</div>
 	</body>
 	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
@@ -54,10 +74,49 @@
 		    return local.toJSON().slice(0,10);
 		});
 		
+		function getUserList() {
+		    $.ajax({
+		        type: "GET",
+		         url: "/admin/users",
+		         success: function(data, textStatus, xhr) {
+					 if (xhr.status == 200) {
+						 console.log(data);
+						 let els = data.users.map((it) => {
+							 return `<tr><td>${it.userName}</td><td>${it.score}</td><td>${it.scoreUpdateCount}</td><td><button  onclick="deleteUser('${it._id}')">Delete</button></td></tr>`;
+						 });
+						 $("#user_list_body").append(els);
+					 }
+		          },
+				 complete: function(xhr, textStatus) {
+				     if (xhr.status != 200) {
+						 alert(textStatus);
+				     }
+				  } 
+		       });
+		}
+		
+		function deleteUser(uid) {
+		    $.ajax({
+		        type: "POST",
+		         url: '/admin/user',
+				data: {uid : uid},
+		         success: function(data, textStatus, xhr) {
+					 location.reload();
+		          },
+				 complete: function(xhr, textStatus) {
+				     if (xhr.status != 200) {
+						alert(xhr.responseJSON.error);
+				     }
+				  } 
+		       });
+		}
+		
 		$(document).ready(function() {
 			$('input[type="date"]').each((idx, ip) => {
 				ip.value = new Date().toDateInputValue();
 			});
+			
+			getUserList();
 			
 			$("#user-score-form").submit(function(event) {
 			    $.ajax({
@@ -69,8 +128,9 @@
 							 console.log(data);
 							 $("#user-score-count").html(`Has ${data.count} users update score at this time`);
 							 $("#user-score-records").empty();
+							 
 						 	const recordEls = data.records.map((it) => {
-						 		return `<div>${it.userName} : ${it.score}</div>`;
+						 		return `<div>${it.id} (${it.userName}) : ${it.score}</div>`;
 						 	});
 								
 							 $("#user-score-records").append(recordEls);
@@ -78,7 +138,7 @@
 			          },
 					 complete: function(xhr, textStatus) {
 					     if (xhr.status != 200) {
-							 alert(textStatus);
+							 alert(xhr.responseJSON.error);
 					     }
 					  } 
 			       });
