@@ -32,17 +32,17 @@ Every responses with status code not 200 (SUCCESS) will have an error field in j
 
 Route | HTTP | Description | Params | Return
 --- | --- | --- | --- | ---
-/user/login | POST | login | userName, password | 200: OK, 500: Fail
-/user | PUT | change user name | userName | 200: OK, 500: Fail
-/user/score | POST | submit score | score | 200: OK, 500: Fail
+/api/user/login | POST | login | userName, password | 200: OK, 500: Fail
+/api/user | PUT | change user name | userName | 200: OK, 500: Fail
+/api/user/score | POST | submit score | score | 200: OK, 500: Fail
 
 ### Admin
 
 Route | HTTP | Description | Params | Return
 --- | --- | --- | --- | ---
-/admin/:uid/score | GET | Get user current score | uid: String | 200: OK, 500: Fail
-/admin/users | GET | Get all normal users | | 200: OK, 500: Fail
-/admin/scores | GET | Get user score update time line | from, to: Date time string |  200: OK, 500: Fail
+/api/admin/:uid/score | GET | Get user current score | uid: String | 200: OK, 500: Fail
+/api/admin/users | GET | Get all normal users | | 200: OK, 500: Fail
+/api/admin/scores | GET | Get user score update time line | from, to: Date time string |  200: OK, 500: Fail
 
 ### Dev
 
