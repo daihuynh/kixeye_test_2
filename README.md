@@ -48,5 +48,5 @@ Route | HTTP | Description | Params | Return
 
 Route | HTTP | Description | Params | Return
 --- | --- | --- | --- | ---
-/admin/users | PUT | Init user list | | 200: OK, 500: Fail
-/admin/users | DELETE | Clear all users | | 200: OK, 500: Fail
+/dev/users | PUT | Init user list | | 200: OK, 500: Fail
+/dev/users | DELETE | Clear all users | | 200: OK, 500: Fail
